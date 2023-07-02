@@ -2,7 +2,7 @@
   "name": "jjonline/wx-biz-sdk",
   "description": "企业微信第三方应用开发sdk",
   "type": "library",
-  "license": "GNU General Public License v3.0",
+  "license": "GPL-3.0-or-later",
   "autoload": {
     "psr-4": {
       "jjonline\\WxBizSdk\\": "src/"

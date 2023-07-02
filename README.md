@@ -10,3 +10,7 @@
 ## 维护支持
 
 接受合并PR请求，回复处理问题看空闲时间。
+
+# 其他
+
+spdx标识符规范：[SPDX](https://spdx.org/licenses/)
