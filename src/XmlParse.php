@@ -34,7 +34,7 @@ class XmlParse
     /**
      * 将推送响应过来的xml字符串转换为数组 或 密文解密后的xml字符串转换为数组
      * @param string $xmlText
-     * @return array 返回长度为2的数组，第一个下标值为0则成功再取第二个下标返回解析xml成功后的值
+     * @return array 返回长度为2的数组，第一个下标值为0则成功再取第二个下标返回转换xml成功后的数组
      */
     public static function transferXml2Array($xmlText)
     {

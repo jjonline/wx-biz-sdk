@@ -2,7 +2,13 @@
  
 企业微信第三方应用开发sdk的php版本，日常开发过程中参考 [官方SDK](https://github.com/sbzhu/weworkapi_php/blob/master/callback/pkcs7Encoder.php) 提炼而来。
 
-## 使用接收
+## 使用介绍
+
+composer包地址：[https://packagist.org/packages/jjonline/wx-biz-sdk](https://packagist.org/packages/jjonline/wx-biz-sdk)
+
+````
+composer require jjonline/wx-biz-sdk
+````
 
 > 请参考查看`example`目录下的样例文件以及使用说明。
 
