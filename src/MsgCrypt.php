@@ -40,7 +40,7 @@ class MsgCrypt
     }
 
     /**
-     * 解密des密文
+     * 解密aes密文
      * @param string $encrypted 密文
      * @param string $receiveId 场景值-callback则是corp_id
      * @return array 返回长度为2的数组，第一个下标值为0则成功第二个下标志返回解密后的值
