@@ -1,11 +1,13 @@
 # wx-bz-sdk
  
-企业微信第三方应用开发sdk的php版本，日常开发过程中参考 [官方半吊子SDK](https://github.com/sbzhu/weworkapi_php/blob/master/callback/pkcs7Encoder.php) 提炼而来。
+企业微信第三方应用开发sdk的php版本，日常开发过程中参考 [官方SDK](https://github.com/sbzhu/weworkapi_php/blob/master/callback/pkcs7Encoder.php) 提炼而来。
 
-## 支持功能
+## 使用接收
 
-- [x] 回调解密和验证
-- [ ] todo
+> 请参考查看`example`目录下的样例文件以及使用说明。
+
+* GET请求回调验证使用示例：[example/verify_callback.php](https://github.com/jjonline/wx-biz-sdk/blob/master/example/verify_callback.php)
+* POST请求接收ticket：[example/retire_ticket_from_post.php](https://github.com/jjonline/wx-biz-sdk/blob/master/example/retire_ticket_from_post.php)
 
 ## 维护支持
 

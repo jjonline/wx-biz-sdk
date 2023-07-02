@@ -25,7 +25,7 @@ class WxBizMsgCrypt
     }
 
     /**
-     * 回调签名验证并解密
+     * GET回调签名验证并解密
      * @param string $msg_signature 签名串，对应URL参数的msg_signature
      * @param string $timestamp 时间戳，对应URL参数的timestamp
      * @param string $nonce 随机串，对应URL参数的nonce
@@ -81,7 +81,7 @@ class WxBizMsgCrypt
      * @param string $timestamp 时间戳 对应URL参数的timestamp
      * @param string $nonce 随机串，对应URL参数的nonce
      * @param string $postBody 对应POST请求的数据body体原始内容
-     * @return false|string
+     * @return false|string 验证并解密成功返回xml标签Encrypt中的值的解密后的明文
      */
     public function decryptMsg($msg_signature, $timestamp, $nonce, $postBody)
     {
@@ -89,9 +89,9 @@ class WxBizMsgCrypt
             return false;
         }
 
-        // 提取body体的密文
-        $xmlParse = new XmlParse;
-        list($status, $encrypt) = $xmlParse->extract($postBody);
+        // ① 提取body体的密文--密文正确解析出来后还是xml
+        // ② 参与验签的是这个密文而不是整个xml的body体
+        list($status, $encrypt) = XmlParse::extractEncryptTagValue($postBody);
 
         if ($status != ErrorCode::$OK) {
             return false;
@@ -115,16 +115,18 @@ class WxBizMsgCrypt
      */
     protected function extracted($msg_signature, $timestamp, $nonce, $encrypt)
     {
+        // ① 自己依据参数计算签名值
         list($status, $calcSignature) = VerifySignature::sign($this->token, $timestamp, $nonce, $encrypt); // verify msg_signature
         if ($status != ErrorCode::$OK) {
             return false;
         }
 
+        // ② 比对自主计算的签名值与回调过来的申明的签名值是否一致
         if ($calcSignature != $msg_signature) {
             return false;
         }
 
-        // 解密aes消息message
+        // ③ 解密aes消息message：内部隐含还有一层场景值的验证，所以依赖 $this->receiveId
         $pc = new MsgCrypt($this->encodingAesKey);
         list($deStatus, $decrypted) = $pc->decrypt($encrypt, $this->receiveId);
         if ($deStatus != ErrorCode::$OK) {

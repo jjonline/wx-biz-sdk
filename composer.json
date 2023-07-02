@@ -16,7 +16,9 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "ext-dom": "*",
-    "ext-openssl": "*"
+    "ext-openssl": "*",
+    "ext-simplexml": "*",
+    "ext-libxml": "*",
+    "ext-json": "*"
   }
 }

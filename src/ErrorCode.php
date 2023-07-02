@@ -1,4 +1,7 @@
 <?php
+/**
+ * 内部用错误码
+ */
 
 namespace jjonline\WxBizSdk;
 
