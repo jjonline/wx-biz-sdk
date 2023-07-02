@@ -1,0 +1,22 @@
+{
+  "name": "jjonline/wx-biz-sdk",
+  "description": "企业微信第三方应用开发sdk",
+  "type": "library",
+  "license": "GPL-v3",
+  "autoload": {
+    "psr-4": {
+      "jjonline\\WxBizSdk\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Jea杨",
+      "email": "jjonline@jjonline.cn"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "ext-dom": "*",
+    "ext-openssl": "*"
+  }
+}
