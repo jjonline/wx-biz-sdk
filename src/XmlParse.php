@@ -21,7 +21,7 @@ class XmlParse
             $xml->loadXML($xmlText);
             $array_e = $xml->getElementsByTagName('Encrypt');
             $encrypt = $array_e->item(0)->nodeValue;
-            return array(0, $encrypt);
+            return array(ErrorCode::$OK, $encrypt);
         } catch (\Exception $e) {
             return array(ErrorCode::$ParseXmlError, null);
         }

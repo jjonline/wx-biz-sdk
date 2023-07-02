@@ -13,7 +13,7 @@ class MsgCrypt
     public $iv  = null;
 
     /**
-     * @param string $k
+     * @param string $k 企业微信应用配置的EncodingAESKey值 必须是43个字符
      */
     public function __construct($k)
     {
@@ -40,9 +40,9 @@ class MsgCrypt
     }
 
     /**
-     * 解密
-     * @param string $encrypted
-     * @param string $receiveId
+     * 解密des密文
+     * @param string $encrypted 密文
+     * @param string $receiveId 场景值-callback则是corp_id
      * @return array 返回长度为2的数组，第一个下标值为0则成功第二个下标志返回解密后的值
      */
     public function decrypt($encrypted, $receiveId)
@@ -63,12 +63,14 @@ class MsgCrypt
             $xml_content    = substr($content, 4, $xml_len);
             $from_receiveId = substr($content, $xml_len + 4);
         } catch (Exception $e) {
-            print $e;
             return array(ErrorCode::$IllegalBuffer, null);
         }
+
+        // 验证场景值，GET请求验证URL的是企业id--corp_id
         if ($from_receiveId != $receiveId) {
             return array(ErrorCode::$ValidateCorpIdError, null);
         }
+
         return array(ErrorCode::$OK, $xml_content);
     }
 

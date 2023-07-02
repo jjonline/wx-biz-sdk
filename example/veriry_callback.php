@@ -7,7 +7,7 @@ use jjonline\WxBizSdk\WxBizMsgCrypt;
 
 $token          = "token"; // 第三方接入应用Token
 $encodingAesKey = "encodingAesKey"; // 第三方接入应用EncodingAESKey
-$receiveId      = "receiveId"; // 第三方接入应用id
+$receiveId      = "receiveId"; // 场景值，不同场景含义不同 重要：验证回调时此处给你自己企业微信的corp_id
 $srv            = new WxBizMsgCrypt($token, $encodingAesKey, $receiveId);
 
 $sVerifyMsgSig    = $_GET['msg_signature'];

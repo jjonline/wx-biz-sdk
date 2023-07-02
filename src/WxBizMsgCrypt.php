@@ -34,12 +34,13 @@ class WxBizMsgCrypt
      */
     public function verifySignature($msg_signature, $timestamp, $nonce, $echostr)
     {
+        // ugly 企业微信应用配置的EncodingAESKey长度必须是43个字符的长度
         if (strlen($this->encodingAesKey) != 43) {
             return false;
         }
 
-        $pc = new MsgCrypt($this->encodingAesKey);
-        return $this->extracted($msg_signature, $timestamp, $nonce, $echostr, $pc);
+        $echostr = empty($echostr) ? '' : $echostr;
+        return $this->extracted($msg_signature, $timestamp, $nonce, $echostr);
     }
 
     /**
@@ -49,7 +50,7 @@ class WxBizMsgCrypt
      * @param string $sNonce 随机串，可以自己生成，也可以用URL参数的nonce
      * @return bool|string
      */
-    public function encryptMsg($sReplyMsg, $sTimeStamp, $sNonce, &$sEncryptMsg)
+    public function encryptMsg($sReplyMsg, $sTimeStamp, $sNonce)
     {
         $pc = new MsgCrypt($this->encodingAesKey);
 
@@ -75,60 +76,61 @@ class WxBizMsgCrypt
     }
 
     /**
-     * @param string $sMsgSignature 签名串，对应URL参数的msg_signature
-     * @param string $sTimeStamp 时间戳 对应URL参数的timestamp
-     * @param string $sNonce 随机串，对应URL参数的nonce
-     * @param string $sPostData 密文，对应POST请求的数据
+     * 解密post提交的数据
+     * @param string $msg_signature 签名串，对应URL参数的msg_signature
+     * @param string $timestamp 时间戳 对应URL参数的timestamp
+     * @param string $nonce 随机串，对应URL参数的nonce
+     * @param string $postBody 对应POST请求的数据body体原始内容
      * @return false|string
      */
-    public function decryptMsg($sMsgSignature, $sTimeStamp, $sNonce, $sPostData)
+    public function decryptMsg($msg_signature, $timestamp, $nonce, $postBody)
     {
         if (strlen($this->encodingAesKey) != 43) {
             return false;
         }
 
-        $pc = new MsgCrypt($this->encodingAesKey);
-
-        //提取密文
+        // 提取body体的密文
         $xmlParse = new XmlParse;
-        list($status, $encrypt) = $xmlParse->extract($sPostData);
+        list($status, $encrypt) = $xmlParse->extract($postBody);
 
         if ($status != ErrorCode::$OK) {
             return false;
         }
 
-        if (empty($sTimeStamp)) {
-            $sTimeStamp = time();
+        if (empty($timestamp)) {
+            $timestamp = time();
         }
 
         // 验证安全签名
-        return $this->extracted($sTimeStamp, $sNonce, $encrypt, $sMsgSignature, $pc);
+        return $this->extracted($msg_signature, $timestamp, $nonce, $encrypt);
     }
 
     /**
-     * 公用方法
-     * @param string $sTimeStamp
-     * @param string $sNonce
-     * @param string $sEchoStr
-     * @param string $sMsgSignature
-     * @param MsgCrypt $pc
+     * 公用方法：验签并解密加密字符串中的message
+     * @param string $msg_signature 回调申明的签名值
+     * @param string $timestamp 回调query中的timestamp
+     * @param string $nonce 回调query中的nonce
+     * @param string $encrypt 被加密的字符串原始值
      * @return false|string
      */
-    protected function extracted($sTimeStamp, $sNonce, $sEchoStr, $sMsgSignature, MsgCrypt $pc)
+    protected function extracted($msg_signature, $timestamp, $nonce, $encrypt)
     {
-        list($status, $text) = VerifySignature::sign($this->token, $sTimeStamp, $sNonce, $sEchoStr); // verify msg_signature
+        list($status, $calcSignature) = VerifySignature::sign($this->token, $timestamp, $nonce, $encrypt); // verify msg_signature
         if ($status != ErrorCode::$OK) {
             return false;
         }
 
-        if ($text != $sMsgSignature) {
+        if ($calcSignature != $msg_signature) {
             return false;
         }
 
-        list($deStatus, $decrypted) = $pc->decrypt($sEchoStr, $this->receiveId);
+        // 解密aes消息message
+        $pc = new MsgCrypt($this->encodingAesKey);
+        list($deStatus, $decrypted) = $pc->decrypt($encrypt, $this->receiveId);
         if ($deStatus != ErrorCode::$OK) {
             return false;
         }
+
         return $decrypted;
     }
 }

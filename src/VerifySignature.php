@@ -21,7 +21,7 @@ class VerifySignature
         try {
             $array = array($encrypt_msg, $token, $timestamp, $nonce);
             sort($array, SORT_STRING);
-            $str = implode($array);
+            $str = implode('', $array);
             return array(ErrorCode::$OK, sha1($str));
         } catch (Exception $e) {
             return array(ErrorCode::$ComputeSignatureError, null);
