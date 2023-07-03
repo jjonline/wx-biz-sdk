@@ -19,6 +19,7 @@
     "ext-openssl": "*",
     "ext-simplexml": "*",
     "ext-libxml": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "6.*|7.*"
   }
 }
