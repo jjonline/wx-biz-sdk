@@ -197,11 +197,13 @@ class SuiteAccess
         }
 
         // 如果需要深层次解析响应errcode|errmsg则进一步统一判断
-        if (!empty($needRespOk) && $jsonData['errcode'] != self::RespErrCodeOk) {
-            $msg = empty($jsonData['errmsg']) ? '' : $jsonData['errmsg'];
-            throw new Exception(
-                '调用api响应异常，errcode=' . $result['errcode'] . '，errmsg=' . $msg . '，Body=' . $result['body']
-            );
+        if (!empty($needRespOk)) {
+            if (isset($jsonData['errcode']) && $jsonData['errcode'] != self::RespErrCodeOk) {
+                $msg = empty($jsonData['errmsg']) ? '' : $jsonData['errmsg'];
+                throw new Exception(
+                    '调用api响应异常，errcode=' . $jsonData['errcode'] . '，errmsg=' . $msg . '，Body=' . $result['body']
+                );
+            }
         }
 
         // array
