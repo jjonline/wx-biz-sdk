@@ -54,6 +54,14 @@ if ($status !== 0) {
 }
 
 /**
+ * 指令回调会推送很多事件过来，不局限于suite_ticket
+ * 这里要拦截判断，当然可以参考 deal_command_notify.php 判断所有指令回调
+ */
+if ($result['InfoType'] != 'suite_ticket') {
+    return 'None suite_ticket notify';
+}
+
+/**
  * 最后一路顺风的话，到这里$result数组结构如下：
  * [
  *      'SuiteId'     => 'ww36395ed27540e09f',

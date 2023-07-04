@@ -94,7 +94,7 @@ class HttpHelper
      * @return array
      * @throws Exception
      */
-    public static function request(string $method, string $api = '', array $options = [])
+    public static function request(string $method, string $api = '', array $options = []): array
     {
         if (is_null(self::$guzzleHttpClient)) {
             self::$guzzleHttpClient = new Client(
