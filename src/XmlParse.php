@@ -18,7 +18,7 @@ class XmlParse
      * list($status, $xml2Array) = XmlParse::extractEncryptTagValue($xmlBody);
      * ++++
      */
-    public static function extractEncryptTagValue($xmlText)
+    public static function extractEncryptTagValue(string $xmlText): array
     {
         try {
             list($status, $result) = self::transferXml2Array($xmlText);
@@ -36,7 +36,7 @@ class XmlParse
      * @param string $xmlText
      * @return array 返回长度为2的数组，第一个下标值为0则成功再取第二个下标返回转换xml成功后的数组
      */
-    public static function transferXml2Array($xmlText)
+    public static function transferXml2Array(string $xmlText): array
     {
         try {
             $xmlObject = simplexml_load_string($xmlText, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -53,10 +53,10 @@ class XmlParse
      * 生成推送出去的xml消息
      * @param string $encrypt 加密后的消息密文
      * @param string $signature 安全签名
-     * @param string $timestamp 时间戳
+     * @param string $timestamp 时间戳，注意给字符串形式
      * @param string $nonce 随机字符串
      */
-    public static function generate($encrypt, $signature, $timestamp, $nonce)
+    public static function generate(string $encrypt, string $signature, string $timestamp, string $nonce): string
     {
         $format = "<xml>
 <Encrypt><![CDATA[%s]]></Encrypt>

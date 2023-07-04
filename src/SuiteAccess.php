@@ -54,7 +54,7 @@ class SuiteAccess
      * @return array 不抛异常则一定能返回数组，关键结构['pre_auth_code' => '', 'expires_in' => '']，调用失败或错误抛出Exception异常
      * @throws Exception
      */
-    public function getPreAuthCode($suite_access_token)
+    public function getPreAuthCode(string $suite_access_token): array
     {
         if (empty($suite_access_token)) {
             throw new Exception('suite_access_token不得为空');
@@ -74,7 +74,7 @@ class SuiteAccess
      * @return array 不抛异常则一定能返回数组，调用失败或错误抛出Exception异常
      * @throws Exception
      */
-    public function setSessionInfo($pre_auth_code, $session_info)
+    public function setSessionInfo(string $pre_auth_code, array $session_info): array
     {
         if (empty($pre_auth_code)) {
             throw new Exception('pre_auth_code不得为空');
@@ -99,7 +99,7 @@ class SuiteAccess
      * @return array 不抛异常则一定能返回数组，数组结构请dump或参照文档链接查看，调用失败或错误抛出Exception异常
      * @throws Exception
      */
-    public function getPermanentCode($suite_access_token, $auth_code)
+    public function getPermanentCode(string $suite_access_token, string $auth_code): array
     {
         if (empty($suite_access_token)) {
             throw new Exception('suite_access_token不得为空');
@@ -126,7 +126,7 @@ class SuiteAccess
      * @return array 不抛异常则一定能返回数组，数组结构请dump或参照文档链接查看，调用失败或错误抛出Exception异常
      * @throws Exception
      */
-    public function getAuthInfo($suite_access_token, $permanent_code, $corp_id)
+    public function getAuthInfo(string $suite_access_token, string $permanent_code, string $corp_id): array
     {
         if (empty($suite_access_token)) {
             throw new Exception('suite_access_token不得为空');
@@ -157,7 +157,7 @@ class SuiteAccess
      * @return array 不抛异常则一定能返回数组，关键结构['access_token' => '', 'expires_in' => '']，调用失败或错误抛出Exception异常
      * @throws Exception
      */
-    public function getCorpToken($suite_access_token, $permanent_code, $corp_id)
+    public function getCorpToken(string $suite_access_token, string $permanent_code, string $corp_id): array
     {
         if (empty($suite_access_token)) {
             throw new Exception('suite_access_token不得为空');
@@ -186,7 +186,7 @@ class SuiteAccess
      * @return array
      * @throws Exception
      */
-    protected function parseResponse($result, $needRespOk = false)
+    protected function parseResponse(array $result, bool $needRespOk = false): array
     {
         if ($result['code'] != HttpHelper::StatusOK) {
             throw new Exception('调用api响应http_status状态码异常：' . $result['code']);

@@ -15,7 +15,7 @@ class MsgCrypt
     /**
      * @param string $k 企业微信应用配置的EncodingAESKey值 必须是43个字符
      */
-    public function __construct($k)
+    public function __construct(string $k)
     {
         $this->key = base64_decode($k . '=');
         $this->iv  = substr($this->key, 0, 16);
@@ -27,7 +27,7 @@ class MsgCrypt
      * @param string $receiveId
      * @return array 返回长度为2的数组，第一个下标值为0则成功第二个下标志返回加密后的值
      */
-    public function encrypt($text, $receiveId)
+    public function encrypt(string $text, string $receiveId): array
     {
         try {
             $text      = $this->getRandomStr() . pack('N', strlen($text)) . $text . $receiveId;              // 拼接
@@ -45,7 +45,7 @@ class MsgCrypt
      * @param string $receiveId 场景值-callback则是corp_id
      * @return array 返回长度为2的数组，第一个下标值为0则成功第二个下标志返回解密后的值
      */
-    public function decrypt($encrypted, $receiveId)
+    public function decrypt(string $encrypted, string $receiveId): array
     {
         try {
             $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', $this->key, OPENSSL_ZERO_PADDING, $this->iv); // 解密
@@ -78,7 +78,7 @@ class MsgCrypt
      * 生成随机字符串
      * @return string
      */
-    private function getRandomStr()
+    private function getRandomStr(): string
     {
         $str     = '';
         $str_pol = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyl';

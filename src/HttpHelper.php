@@ -94,7 +94,7 @@ class HttpHelper
      * @return array
      * @throws Exception
      */
-    public static function request($method, $api = '', array $options = [])
+    public static function request(string $method, string $api = '', array $options = [])
     {
         if (is_null(self::$guzzleHttpClient)) {
             self::$guzzleHttpClient = new Client(
@@ -107,7 +107,7 @@ class HttpHelper
                     'allow_redirects'  => false, // http重定向不执行
                     'decode_content'   => false, // 是否解码结果集
                     'headers'          => [
-                        'user-agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : static::$ua,
+                        'user-agent' => $_SERVER['HTTP_USER_AGENT'] ?? static::$ua,
                         'Referer'    => 'https://packagist.org/packages/jjonline/wx-biz-sdk',
                     ],
                 ]
@@ -137,7 +137,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function get($api, array $query = [], array $header = [])
+    public static function get(string $api, array $query = [], array $header = []): array
     {
         return self::request('GET', $api, ['headers' => $header, 'query' => $query]);
     }
@@ -151,7 +151,7 @@ class HttpHelper
      * @return array
      * @throws Exception
      */
-    public static function post($api, array $query = [], array $header = [], array $body = [])
+    public static function post(string $api, array $query = [], array $header = [], array $body = []): array
     {
         return self::postFormFiled($api, $query, $header, $body);
     }
@@ -170,7 +170,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function postFormFiled($api, array $query = [], array $header = [], array $body = [])
+    public static function postFormFiled(string $api, array $query = [], array $header = [], array $body = []): array
     {
         return self::request('POST', $api, [
             'headers'     => $header,
@@ -193,7 +193,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function put($api, array $query = [], array $header = [], array $body = [])
+    public static function put(string $api, array $query = [], array $header = [], array $body = []): array
     {
         return self::putFormFiled($api, $query, $header, $body);
     }
@@ -212,7 +212,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function putFormFiled($api, array $query = [], array $header = [], array $body = [])
+    public static function putFormFiled(string $api, array $query = [], array $header = [], array $body = []): array
     {
         return self::request('PUT', $api, [
             'headers'     => $header,
@@ -241,7 +241,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function postFormData($api, array $query = [], array $header = [], array $body = [])
+    public static function postFormData(string $api, array $query = [], array $header = [], array $body = []): array
     {
         return self::request('POST', $api, [
             'headers'   => $header,
@@ -259,7 +259,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function postJson($api, array $query = [], array $header = [], $body = [])
+    public static function postJson(string $api, array $query = [], array $header = [], $body = []): array
     {
         // 如果没有设置任何header，则强制设置请求体类型为application/json
         if (empty($header)) {
@@ -288,7 +288,7 @@ class HttpHelper
      * @return array  ['code'=>,'header'=>,'body'=>]
      * @throws Exception
      */
-    public static function putJson($api, array $query = [], array $header = [], $body = [])
+    public static function putJson(string $api, array $query = [], array $header = [], $body = []): array
     {
         $param = [
             'headers' => $header,
@@ -308,7 +308,7 @@ class HttpHelper
      * @param string $filePath 本地存储文件绝对路径
      * @return bool
      */
-    public static function download($url, $filePath)
+    public static function download(string $url, string $filePath): bool
     {
         try {
             $resource = fopen($filePath, 'w+');

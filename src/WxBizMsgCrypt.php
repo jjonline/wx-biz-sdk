@@ -32,7 +32,7 @@ class WxBizMsgCrypt
      * @param string $echostr 随机串，对应URL参数的echostr
      * @return false|string 验证解密成功返回解密成功后字符串，否则返回false
      */
-    public function verifySignature($msg_signature, $timestamp, $nonce, $echostr)
+    public function verifySignature(string $msg_signature, string $timestamp, string $nonce, string $echostr)
     {
         // ugly 企业微信应用配置的EncodingAESKey长度必须是43个字符的长度
         if (strlen($this->encodingAesKey) != 43) {
@@ -50,7 +50,7 @@ class WxBizMsgCrypt
      * @param string $sNonce 随机串，可以自己生成，也可以用URL参数的nonce
      * @return bool|string
      */
-    public function encryptMsg($sReplyMsg, $sTimeStamp, $sNonce)
+    public function encryptMsg(string $sReplyMsg, string $sTimeStamp, string $sNonce)
     {
         $pc = new MsgCrypt($this->encodingAesKey);
 
@@ -71,8 +71,7 @@ class WxBizMsgCrypt
         }
 
         // 生成发送的xml
-        $xmlParse = new XmlParse;
-        return $xmlParse->generate($encrypt, $signature, $sTimeStamp, $sNonce);
+        return XmlParse::generate($encrypt, $signature, strval($sTimeStamp), $sNonce);
     }
 
     /**
@@ -83,7 +82,7 @@ class WxBizMsgCrypt
      * @param string $postBody 对应POST请求的数据body体原始内容
      * @return false|string 验证并解密成功返回xml标签Encrypt中的值的解密后的明文
      */
-    public function decryptMsg($msg_signature, $timestamp, $nonce, $postBody)
+    public function decryptMsg(string $msg_signature, string $timestamp, string $nonce, string $postBody)
     {
         if (strlen($this->encodingAesKey) != 43) {
             return false;
@@ -113,7 +112,7 @@ class WxBizMsgCrypt
      * @param string $encrypt 被加密的字符串原始值
      * @return false|string
      */
-    protected function extracted($msg_signature, $timestamp, $nonce, $encrypt)
+    protected function extracted(string $msg_signature, string $timestamp, string $nonce, string $encrypt)
     {
         // ① 自己依据参数计算签名值
         list($status, $calcSignature) = VerifySignature::sign($this->token, $timestamp, $nonce, $encrypt); // verify msg_signature
