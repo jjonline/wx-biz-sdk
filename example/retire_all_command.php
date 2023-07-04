@@ -134,11 +134,11 @@ switch ($cmdInfo['InfoType'] ?? $cmdInfo['Event']) {
         // https://developer.work.weixin.qq.com/document/path/97378
         break;
     case 'approve_special_auth':
-        // 获客助手权限取消事件
+        // 获客助手权限确认事件
         // https://developer.work.weixin.qq.com/document/path/98959
         break;
     case 'cancel_special_auth':
-        // 获客助手权限确认事件
+        // 获客助手权限取消事件
         // https://developer.work.weixin.qq.com/document/path/98959
         break;
 }

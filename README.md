@@ -15,6 +15,7 @@ composer require jjonline/wx-biz-sdk
 * GET请求回调验证使用示例：[example/verify_callback.php](https://github.com/jjonline/wx-biz-sdk/blob/master/example/verify_callback.php)
 * POST请求接收ticket使用示例：[example/retire_ticket_from_post.php](https://github.com/jjonline/wx-biz-sdk/blob/master/example/retire_ticket_from_post.php)
 * POST请求所有指令回调使用示例：[example/retire_all_command.php](https://github.com/jjonline/wx-biz-sdk/blob/master/example/retire_all_command.php)
+* 主动调用第三方应用授权认证api示例：[example/call_access_api.php](https://github.com/jjonline/wx-biz-sdk/blob/master/example/call_access_api.php)
 
 ## 维护支持
 
