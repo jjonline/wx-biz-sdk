@@ -31,6 +31,26 @@ class SuiteAccess
     }
 
     /**
+     * 构造第三方应用其他企业授权使用的oauth跳转URL
+     * https://developer.work.weixin.qq.com/document/path/90597
+     * @param string $pre_auth_code 本类 getPreAuthCode 方法获取的pre_auth_code
+     * @param string $redirect_uri  授权后回来的URL，这个URL去取auth_code，然后就可以拿这个auth_code调用 getPermanentCode 方法
+     * @param string $state         随机字符，在$redirect_uri里要原样带回，验证来源
+     * @return string
+     */
+    public function makeAppGiveAuthRedirectUrl(string $pre_auth_code, string $redirect_uri, string $state): string
+    {
+        $url   = 'https://open.work.weixin.qq.com/3rdapp/install';
+        $param = [
+            'suite_id'      => $this->suite_id,
+            'pre_auth_code' => $pre_auth_code,
+            'redirect_uri'  => $redirect_uri,
+            'state'         => $state,
+        ];
+        return $url . '?' . http_build_query($param);
+    }
+
+    /**
      * suite_ticket换suite_access_token
      * https://developer.work.weixin.qq.com/document/path/90600
      * @param string $suite_ticket
