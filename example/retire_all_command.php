@@ -19,7 +19,7 @@ use jjonline\WxBizSdk\XmlParse;
  */
 $token          = "token";           // 创建应用生成的Token
 $encodingAesKey = "encodingAesKey";  // 创建应用生成的EncodingAESKey，必须是43个字符
-$receiveId      = "use app suit_id"; // 场景值，不同场景含义不同 重要：此处验证POST回调时给你应用的suit_id
+$receiveId      = "use app suit_id"; // 场景值，不同场景含义不同 重要：此处验证指令回调时给你应用的suit_id
 $srv            = new WxBizMsgCrypt($token, $encodingAesKey, $receiveId);
 
 /**

@@ -33,7 +33,7 @@ class SuiteAccess
      * @return array 不抛异常则一定能返回数组，关键结构['suite_access_token' => '', 'expires_in' => '']，调用失败或错误抛出Exception异常
      * @throws Exception
      */
-    public function getSuiteToken($suite_ticket)
+    public function getSuiteToken(string $suite_ticket): array
     {
         if (empty($suite_ticket)) {
             throw new Exception('suite_ticket不得为空');

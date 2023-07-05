@@ -15,9 +15,9 @@ class WxBizMsgCrypt
      * 构造函数
      * @param string $token 开发者设置的token
      * @param string $encodingAesKey 开发者设置的EncodingAESKey
-     * @param string $receiveId 不同应用场景传不同的app_id|suit_id
+     * @param string $receiveId 不同应用场景传不同的corp_id|suit_id
      */
-    public function __construct($token, $encodingAesKey, $receiveId)
+    public function __construct(string $token, string $encodingAesKey, string $receiveId)
     {
         $this->token          = $token;
         $this->encodingAesKey = $encodingAesKey;
@@ -61,7 +61,7 @@ class WxBizMsgCrypt
         }
 
         if (empty($sTimeStamp)) {
-            $sTimeStamp = time();
+            $sTimeStamp = strval(time());
         }
 
         // 生成安全签名
@@ -71,7 +71,7 @@ class WxBizMsgCrypt
         }
 
         // 生成发送的xml
-        return XmlParse::generate($encrypt, $signature, strval($sTimeStamp), $sNonce);
+        return XmlParse::generate($encrypt, $signature, $sTimeStamp, $sNonce);
     }
 
     /**
@@ -97,7 +97,7 @@ class WxBizMsgCrypt
         }
 
         if (empty($timestamp)) {
-            $timestamp = time();
+            $timestamp = strval(time());
         }
 
         // 验证安全签名

@@ -26,7 +26,7 @@ class XmlParse
                 return [ErrorCode::$OK, $result['Encrypt']]; // 只需要返回Encrypt键的值
             }
             return array(ErrorCode::$ParseXmlError, null);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return array(ErrorCode::$ParseXmlError, null);
         }
     }
@@ -44,7 +44,7 @@ class XmlParse
                 throw new Exception('SimpleXMLElement Parse Error'); // 基本不会出现
             }
             return array(ErrorCode::$OK, json_decode(json_encode($xmlObject), true));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return array(ErrorCode::$ParseXmlError, null);
         }
     }
