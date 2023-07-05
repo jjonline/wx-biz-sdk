@@ -16,6 +16,7 @@ class SuiteAccess
     const GetPermanentCode = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_permanent_code';
     const GetAuthInfo      = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_auth_info';
     const GetCorpToken     = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_corp_token';
+    const GetAdminList     = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_admin_list';
 
     protected $suite_id;
     protected $suite_secret;
@@ -176,6 +177,37 @@ class SuiteAccess
             'permanent_code' => $permanent_code,
         ];
         $result = HttpHelper::postJson(self::GetCorpToken, $query, [], $body);
+        return $this->parseResponse($result, true);
+    }
+
+    /**
+     * 获取应用的管理员列表
+     * https://developer.work.weixin.qq.com/document/path/90606
+     * @param string $suite_access_token 本类 getSuiteToken 方法获取到的suite_access_token令牌
+     * @param string $agent_id 授权企业的应用id
+     * @param string $corp_id 授权企业的企业id
+     * @return array
+     * @throws Exception
+     */
+    public function getAdminList(string $suite_access_token, string $agent_id, string $corp_id): array
+    {
+        if (empty($suite_access_token)) {
+            throw new Exception('suite_access_token不得为空');
+        }
+        if (empty($agent_id)) {
+            throw new Exception('permanent_code不得为空');
+        }
+        if (empty($corp_id)) {
+            throw new Exception('corp_id不得为空');
+        }
+        $query  = [
+            'suite_access_token' => $suite_access_token,
+        ];
+        $body   = [
+            'auth_corpid' => $corp_id,
+            'agentid'     => $agent_id,
+        ];
+        $result = HttpHelper::postJson(self::GetAdminList, $query, [], $body);
         return $this->parseResponse($result, true);
     }
 
