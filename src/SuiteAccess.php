@@ -9,14 +9,17 @@ use Exception;
 
 class SuiteAccess
 {
-    const RespErrCodeOk    = 0; // 调用api响应json中errcode字段值成功标量
-    const GetSuitToken     = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_suite_token';
-    const GetPreAuthCode   = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_pre_auth_code';
-    const SetSessionInfo   = 'https://qyapi.weixin.qq.com/cgi-bin/service/set_session_info';
-    const GetPermanentCode = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_permanent_code';
-    const GetAuthInfo      = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_auth_info';
-    const GetCorpToken     = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_corp_token';
-    const GetAdminList     = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_admin_list';
+    const RespErrCodeOk      = 0; // 调用api响应json中errcode字段值成功标量
+    const GetSuitToken       = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_suite_token';
+    const GetPreAuthCode     = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_pre_auth_code';
+    const SetSessionInfo     = 'https://qyapi.weixin.qq.com/cgi-bin/service/set_session_info';
+    const GetPermanentCode   = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_permanent_code';
+    const GetAuthInfo        = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_auth_info';
+    const GetCorpToken       = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_corp_token';
+    const GetAdminList       = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_admin_list';
+    const GetAppQrcode       = 'https://qyapi.weixin.qq.com/cgi-bin/service/get_app_qrcode';
+    const CorpIdToOpenCorpId = 'https://qyapi.weixin.qq.com/cgi-bin/service/corpid_to_opencorpid';
+    const GetPermissions     = 'https://qyapi.weixin.qq.com/cgi-bin/agent/get_permissions';
 
     protected $suite_id;
     protected $suite_secret;
@@ -195,7 +198,7 @@ class SuiteAccess
             throw new Exception('suite_access_token不得为空');
         }
         if (empty($agent_id)) {
-            throw new Exception('permanent_code不得为空');
+            throw new Exception('agent_id不得为空');
         }
         if (empty($corp_id)) {
             throw new Exception('corp_id不得为空');
@@ -208,6 +211,73 @@ class SuiteAccess
             'agentid'     => $agent_id,
         ];
         $result = HttpHelper::postJson(self::GetAdminList, $query, [], $body);
+        return $this->parseResponse($result, true);
+    }
+
+    /**
+     * 获取应用二维码
+     * https://developer.work.weixin.qq.com/document/path/95430
+     * @param string $suite_access_token 本类 getSuiteToken 方法获取到的suite_access_token令牌
+     * @param int $style 0：带说明外框的二维码，适合于实体物料，1：带说明外框的二维码，适合于屏幕类，2：不带说明外框（小尺寸），3：不带说明外框（中尺寸），4：不带说明外框（大尺寸）
+     * @return array
+     * @throws Exception
+     */
+    public function getAppQrcode(string $suite_access_token, int $style = 4): array
+    {
+        if (empty($suite_access_token)) {
+            throw new Exception('suite_access_token不得为空');
+        }
+        $query  = [
+            'suite_access_token' => $suite_access_token,
+        ];
+        $body   = [
+            'suite_id'    => $this->suite_id,
+            'result_type' => 2, // 固定返回二维码图片URL
+            'style'       => $style, // 固定返回二维码图片URL
+        ];
+        $result = HttpHelper::postJson(self::GetAppQrcode, $query, [], $body);
+        return $this->parseResponse($result, true);
+    }
+
+    /**
+     * 明文corpId转换为加密corpId
+     * https://developer.work.weixin.qq.com/document/path/95604
+     * @param string $provider_access_token 服务商凭证，不是suite_access_token，注意区分
+     * @param string $corp_id 待转换的企业id
+     * @return array
+     * @throws Exception
+     */
+    public function corpIdToOpenCorpId(string $provider_access_token, string $corp_id): array
+    {
+        if (empty($provider_access_token)) {
+            throw new Exception('provider_access_token不得为空');
+        }
+        $query  = [
+            'provider_access_token' => $provider_access_token,
+        ];
+        $body   = [
+            'corpid' => $corp_id,
+        ];
+        $result = HttpHelper::postJson(self::CorpIdToOpenCorpId, $query, [], $body);
+        return $this->parseResponse($result, true);
+    }
+
+    /**
+     * 获取授权应用权限详情
+     * https://developer.work.weixin.qq.com/document/path/99052
+     * @param string $access_token 本类 getCorpToken 方法获取到的access_token令牌，不是suite_access_token，注意区分
+     * @return array
+     * @throws Exception
+     */
+    public function getPermissions(string $access_token): array
+    {
+        if (empty($access_token)) {
+            throw new Exception('access_token不得为空');
+        }
+        $query  = [
+            'access_token' => $access_token,
+        ];
+        $result = HttpHelper::postJson(self::GetPermissions, $query);
         return $this->parseResponse($result, true);
     }
 
