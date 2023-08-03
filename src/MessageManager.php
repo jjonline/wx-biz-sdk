@@ -35,6 +35,10 @@ class MessageManager
         if (empty($params)) {
             throw new Exception('params不得为空');
         }
+
+        $params['msgtype']                     = 'template_msg'; // 固定值
+        $params['template_msg']['template_id'] = $template_id; // 覆盖替换
+
         $query  = [
             'access_token' => $access_token,
         ];
