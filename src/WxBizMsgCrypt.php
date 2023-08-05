@@ -15,9 +15,9 @@ class WxBizMsgCrypt
      * 构造函数
      * @param string $token 开发者设置的token
      * @param string $encodingAesKey 开发者设置的EncodingAESKey
-     * @param string $receiveId 不同应用场景传不同的corp_id|suit_id
+     * @param string $receiveId 场景值，不同应用场景传不同的corp_id|suit_id，消息回调解密使用可给空不验证（不影响安全），对发送消息加密则需要给
      */
-    public function __construct(string $token, string $encodingAesKey, string $receiveId)
+    public function __construct(string $token, string $encodingAesKey, string $receiveId = '')
     {
         $this->token          = $token;
         $this->encodingAesKey = $encodingAesKey;

@@ -66,8 +66,8 @@ class MsgCrypt
             return array(ErrorCode::$IllegalBuffer, null);
         }
 
-        // 验证场景值，GET请求验证URL的是企业id--corp_id
-        if ($from_receiveId != $receiveId) {
+        // 验证场景值：解密如果未传场景值则不需要验证场景值，解密情形下aes能解出来就能保障数据不是伪造的
+        if (!empty($receiveId) && $from_receiveId != $receiveId) {
             return array(ErrorCode::$ValidateCorpIdError, null);
         }
 
