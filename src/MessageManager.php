@@ -42,7 +42,7 @@ class MessageManager
         $query  = [
             'access_token' => $access_token,
         ];
-        $result = HttpHelper::postJson(self::MessageSend, $query, [], json_encode($params, JSON_UNESCAPED_UNICODE));
+        $result = HttpHelper::postJson(self::MessageSend, $query, [], $params);
         return $this->parseResponse($result, true);
     }
 
